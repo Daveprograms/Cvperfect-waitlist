@@ -1,0 +1,16 @@
+{
+  "name": "CVPerfect - AI-Powered Job Hunting Assistant",
+  "short_name": "CVPerfect",
+  "description": "AI-powered resume analysis, auto-apply to 100+ jobs, and intelligent job matching",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#8b5cf6",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+} 
