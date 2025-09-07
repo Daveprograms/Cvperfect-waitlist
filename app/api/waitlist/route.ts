@@ -139,7 +139,7 @@ export async function POST(request: NextRequest) {
       
       console.log('Attempting to send emails...')
       // Use environment variables for SMTP configuration
-      const smtpHost = process.env.SMTP_HOST || 'smtp.zoho.com'
+      const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com'
       const smtpPort = process.env.SMTP_PORT || '587'
       const smtpUser = process.env.SMTP_USER
       const smtpPassword = process.env.SMTP_PASSWORD
@@ -151,23 +151,15 @@ export async function POST(request: NextRequest) {
         secure: parseInt(smtpPort) === 465
       })
       
-      // Create transporter with correct function name
+      // Create transporter with Gmail configuration
       const transporter = nodemailer.createTransport({
         host: smtpHost,
-        port: Number(smtpPort), // must be number, not string
-        secure: Number(smtpPort) === 465, // true for port 465 (SSL), false for port 587 (STARTTLS)
+        port: parseInt(smtpPort), // must be number, not string
+        secure: parseInt(smtpPort) === 465, // true for port 465 (SSL), false for port 587 (STARTTLS)
         auth: {
           user: smtpUser,
           pass: smtpPassword,
         },
-        // Add timeout settings - increased for production
-        connectionTimeout: 30000, // 30 seconds
-        greetingTimeout: 30000,
-        socketTimeout: 30000,
-        // Add TLS options for Zoho
-        tls: {
-          rejectUnauthorized: false // Zoho sometimes requires this in dev
-        }
       })
 
       // Verify connection first
@@ -177,8 +169,8 @@ export async function POST(request: NextRequest) {
 
       // Email to you (notification) - Use cvperfect.pro address
       const notificationEmail = {
-        from: process.env.SMTP_FROM || 'David from CVPerfect <david@cvperfect.pro>',
-        to: 'david@cvperfect.pro', // Send to cvperfect.pro address
+        from: process.env.SMTP_FROM || 'David from CVPerfect <support@cvperfect.pro>',
+        to: 'support@cvperfect.pro', // Send to cvperfect.pro address
         subject: 'New CVPerfect Waitlist Signup! 🎉',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
@@ -211,10 +203,10 @@ export async function POST(request: NextRequest) {
 
       // Email to the user (confirmation)
       const confirmationEmail = {
-        from: process.env.SMTP_FROM || 'David from CVPerfect <david@cvperfect.pro>',
+        from: process.env.SMTP_FROM || 'David from CVPerfect <support@cvperfect.pro>',
         to: email,
         subject: 'Welcome to CVPerfect - Your Waitlist Confirmation',
-        replyTo: 'david@cvperfect.pro',
+        replyTo: 'support@cvperfect.pro',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
             <div style="text-align: center; margin-bottom: 30px;">
@@ -280,7 +272,7 @@ This email was sent to ${email} because you signed up for the CVPerfect waitlist
 If you didn't sign up, please ignore this email.`,
         // Add headers to improve deliverability
         headers: {
-          'List-Unsubscribe': '<mailto:david@cvperfect.pro?subject=UNSUBSCRIBE>',
+          'List-Unsubscribe': '<mailto:support@cvperfect.pro?subject=UNSUBSCRIBE>',
           'X-Priority': '1',
           'X-MSMail-Priority': 'High',
           'Importance': 'high',
@@ -289,7 +281,7 @@ If you didn't sign up, please ignore this email.`,
           'X-SendGrid-Category': 'waitlist-confirmation',
           'X-Auto-Response-Suppress': 'OOF, AutoReply',
           'Precedence': 'bulk',
-          'X-Report-Abuse': 'Please report abuse here: david@cvperfect.pro'
+          'X-Report-Abuse': 'Please report abuse here: support@cvperfect.pro'
         }
       }
 
@@ -391,11 +383,11 @@ If you didn't sign up, please ignore this email.`,
         emailError: emailErrorDetails || null,
         environment: process.env.NODE_ENV,
         debug: {
-          smtpHost: process.env.SMTP_HOST || 'smtp.zoho.com',
+          smtpHost: process.env.SMTP_HOST || 'smtp.gmail.com',
           smtpPort: process.env.SMTP_PORT || '587',
           smtpUser: process.env.SMTP_USER,
           smtpPassword: process.env.SMTP_PASSWORD ? 'SET' : 'NOT SET',
-          smtpFrom: process.env.SMTP_FROM || 'david@cvperfect.pro'
+          smtpFrom: process.env.SMTP_FROM || 'davidprograms7@gmail.com'
         }
       },
       { status: 200 }
