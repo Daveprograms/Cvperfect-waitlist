@@ -3,6 +3,9 @@ import * as nodemailer from 'nodemailer'
 import fs from 'fs'
 import path from 'path'
 
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: NextRequest) {
   try {
     const { email, name, userType } = await request.json()
@@ -18,8 +21,8 @@ export async function POST(request: NextRequest) {
     // Check for existing email (case-insensitive)
     const normalizedEmail = email.toLowerCase().trim()
     
-    // Check for duplicates in all environments where we have file access
-    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production') {
+    // Check for duplicates only in development (Vercel production FS is ephemeral)
+    if (process.env.NODE_ENV === 'development') {
       try {
         const dataDir = path.join(process.cwd(), 'data')
         const dataPath = path.join(dataDir, 'waitlist-signups.json')
@@ -74,8 +77,8 @@ export async function POST(request: NextRequest) {
 
     let totalSignups = 0
     
-    // Try to write to file system in development and production
-    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production') {
+    // Try to write to file system only in development
+    if (process.env.NODE_ENV === 'development') {
       try {
         // Create data directory if it doesn't exist
         const dataDir = path.join(process.cwd(), 'data')
@@ -113,14 +116,12 @@ export async function POST(request: NextRequest) {
           totalSignups: totalSignups
         })
       } catch (fileError) {
-        console.error('File system error (expected in production):', fileError)
-        // In production, we can't write to file system, so we'll just log the signup
-        totalSignups = 1 // We don't know the actual count in production
+        console.error('File system error while writing signups (expected outside dev):', fileError)
+        totalSignups = 1
       }
     } else {
-      // In production, just log the signup data
-      console.log('New waitlist signup:', signupData)
-      totalSignups = 1 // We don't know the actual count in production
+      // Outside development, avoid FS writes and just proceed
+      totalSignups = 1
     }
 
     // Try to send emails, but don't fail if email sending fails
@@ -128,15 +129,6 @@ export async function POST(request: NextRequest) {
     let emailErrorDetails = ''
     
     try {
-      console.log('=== EMAIL DEBUG START ===')
-      console.log('Environment variables:')
-      console.log('SMTP_HOST:', process.env.SMTP_HOST)
-      console.log('SMTP_PORT:', process.env.SMTP_PORT)
-      console.log('SMTP_USER:', process.env.SMTP_USER)
-      console.log('SMTP_PASSWORD:', process.env.SMTP_PASSWORD ? '***HIDDEN***' : 'NOT SET')
-      console.log('SMTP_FROM:', process.env.SMTP_FROM)
-      console.log('NODE_ENV:', process.env.NODE_ENV)
-      
       console.log('Attempting to send emails...')
       // Use environment variables for SMTP configuration
       const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com'
@@ -147,11 +139,10 @@ export async function POST(request: NextRequest) {
       console.log('SMTP Config:', {
         host: smtpHost,
         port: smtpPort,
-        user: smtpUser,
         secure: parseInt(smtpPort) === 465
       })
       
-      // Create transporter with Gmail configuration
+      // Create transporter with configured SMTP
       const transporter = nodemailer.createTransport({
         host: smtpHost,
         port: parseInt(smtpPort), // must be number, not string
@@ -304,22 +295,7 @@ If you didn't sign up, please ignore this email.`,
         console.log('Continuing with confirmation email despite notification failure...')
       }
       
-      console.log('Confirmation email object:', {
-        from: confirmationEmail.from,
-        to: confirmationEmail.to,
-        subject: confirmationEmail.subject,
-        headers: confirmationEmail.headers
-      })
       console.log('Sending confirmation email to:', email)
-      console.log('Full confirmation email details:', {
-        from: confirmationEmail.from,
-        to: confirmationEmail.to,
-        subject: confirmationEmail.subject,
-        replyTo: confirmationEmail.replyTo,
-        hasHtml: !!confirmationEmail.html,
-        hasText: !!confirmationEmail.text,
-        headers: confirmationEmail.headers
-      })
       let confirmationSent = false
       let confirmationError = null
       
@@ -380,15 +356,7 @@ If you didn't sign up, please ignore this email.`,
         message: 'Successfully joined waitlist',
         totalSignups: totalSignups,
         emailSent: emailSuccess,
-        emailError: emailErrorDetails || null,
-        environment: process.env.NODE_ENV,
-        debug: {
-          smtpHost: process.env.SMTP_HOST || 'smtp.gmail.com',
-          smtpPort: process.env.SMTP_PORT || '587',
-          smtpUser: process.env.SMTP_USER,
-          smtpPassword: process.env.SMTP_PASSWORD ? 'SET' : 'NOT SET',
-          smtpFrom: process.env.SMTP_FROM || 'davidprograms7@gmail.com'
-        }
+        emailError: emailErrorDetails || null
       },
       { status: 200 }
     )
