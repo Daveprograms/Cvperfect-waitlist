@@ -3,12 +3,5 @@
   "outputDirectory": ".next",
   "framework": "nextjs",
   "installCommand": "npm install",
-  "devCommand": "npm run dev",
-  "env": {
-    "SMTP_HOST": "smtp.gmail.com",
-    "SMTP_PORT": "587",
-    "SMTP_USER": "your_gmail_address@gmail.com",
-    "SMTP_PASSWORD": "@gmail_app_password",
-    "SMTP_FROM": "David from CVPerfect <your_gmail_address@gmail.com>"
-  }
+  "devCommand": "npm run dev"
 } 
