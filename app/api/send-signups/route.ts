@@ -28,7 +28,11 @@ export async function POST(request: NextRequest) {
     const csvHeader = 'Name,Email,User Type,Date,Time\n'
     const csvRows = signups.map(s => {
       const cells = [s.name, s.email, s.userType || '', s.date || '', s.time || '']
-      return cells.map(v => String(v).replaceAll('"', '""')).map(v => `"${v}"`).join(',')
+      // Avoid replaceAll for compatibility; use global regex instead
+      return cells
+        .map(v => String(v).replace(/"/g, '""'))
+        .map(v => `"${v}"`)
+        .join(',')
     })
     const csv = csvHeader + csvRows.join('\n')
 
