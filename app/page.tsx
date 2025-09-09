@@ -30,7 +30,6 @@ export default function Home() {
       "@type": "Organization",
       "name": "CVPerfect"
     },
-    "datePublished": "2025-01-01",
     "softwareVersion": "1.0.0"
   }
 

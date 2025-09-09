@@ -207,7 +207,7 @@ export async function POST(request: NextRequest) {
             
             <p style="color: #374151; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">Hi ${name},</p>
             
-            <p style="color: #374151; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">Thank you for joining the CVPerfect waitlist! You're now among the first to get access to our revolutionary AI-powered job hunting assistant when we launch on <strong>October 30, 2025</strong>.</p>
+            <p style="color: #374151; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">Thank you for joining the CVPerfect waitlist! You're now among the first to get access to our revolutionary AI-powered job hunting assistant. <strong>Coming soon</strong>.</p>
             
             <div style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); padding: 25px; border-radius: 12px; margin: 25px 0; border-left: 4px solid #8b5cf6;">
               <h3 style="margin: 0 0 15px 0; color: #374151; font-size: 18px; font-weight: 600;">What you can expect from CVPerfect:</h3>
@@ -224,7 +224,7 @@ export async function POST(request: NextRequest) {
             <p style="color: #374151; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">We'll keep you updated on our development progress and notify you as soon as CVPerfect is ready for early access. Get ready to revolutionize your job search!</p>
             
             <div style="background: #8b5cf6; color: white; padding: 20px; border-radius: 8px; text-align: center; margin: 25px 0;">
-              <p style="margin: 0; font-size: 16px; font-weight: 600;">🚀 Launch Date: October 30, 2025</p>
+              <p style="margin: 0; font-size: 16px; font-weight: 600;">🚀 Launch: Coming soon</p>
             </div>
             
             <p style="color: #374151; font-size: 16px; line-height: 1.6; margin-bottom: 5px;">Best regards,</p>
@@ -241,7 +241,7 @@ export async function POST(request: NextRequest) {
 
 Hi ${name},
 
-Thank you for joining the CVPerfect waitlist! You're now among the first to get access to our AI-powered job hunting assistant when we launch on October 30, 2025.
+Thank you for joining the CVPerfect waitlist! You're now among the first to get access to our AI-powered job hunting assistant. Launch: Coming soon.
 
 What you can expect:
 - AI-powered resume analysis and optimization

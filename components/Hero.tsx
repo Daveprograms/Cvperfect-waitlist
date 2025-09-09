@@ -55,7 +55,7 @@ export default function Hero() {
             className="inline-flex items-center px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-sm font-medium"
           >
             <span className="w-2 h-2 bg-purple-400 rounded-full mr-2 animate-pulse"></span>
-            Coming October 30, 2025
+            Coming soon
           </motion.div>
 
           {/* Headline */}
