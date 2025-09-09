@@ -133,8 +133,8 @@ export default function WaitlistForm() {
             <span className="gradient-text">Join the Waitlist</span>
           </h2>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Be among the first to experience the future of job hunting. Get early access to AI-powered resume analysis, 
-            auto-apply features, and intelligent job matching when we launch on October 30, 2025.
+            Be among the first to experience the future of job hunting. Get early access to AI-powered resume analysis,
+            auto-apply features, and intelligent job matching. <span className="text-purple-300 font-semibold">Coming soon</span>.
           </p>
         </motion.div>
 
