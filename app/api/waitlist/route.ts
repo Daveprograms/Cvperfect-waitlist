@@ -158,10 +158,10 @@ export async function POST(request: NextRequest) {
       await transporter.verify()
       console.log('SMTP connection verified successfully')
 
-      // Email to you (notification) - Use cvperfect.pro address
+      // Email to you (notification)
       const notificationEmail = {
         from: process.env.SMTP_FROM || 'David from CVPerfect <support@cvperfect.pro>',
-        to: 'support@cvperfect.pro', // Send to cvperfect.pro address
+        to: process.env.NOTIFY_TO || 'davidprograms7@gmail.com',
         subject: 'New CVPerfect Waitlist Signup! 🎉',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
